@@ -5,14 +5,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.sonusid.ollama.db.entity.Chat
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ChatDao {
     @Query("SELECT * FROM Chat")
-    fun getAll(): List<Chat>
-
-    @Query("SELECT * FROM Chat WHERE cid IN (:ChatIds)")
-    fun loadAllByIds(ChatIds: IntArray): List<Chat>
+    fun getAll(): Flow<List<Chat>>
 
 
     @Insert
