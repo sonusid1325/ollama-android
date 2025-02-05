@@ -7,5 +7,5 @@ import com.sonusid.ollama.R
 
 // Define a local font family
 val notoSans = FontFamily(
-    Font(R.font.NotoSans, FontWeight.Normal)
+    Font(R.font.notosans, FontWeight.Normal)
 )
