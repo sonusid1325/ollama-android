@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.ui.theme.OllamaTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +20,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             OllamaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                NavHost(navController = navController, startDestination = "home"){
+                    composable("home"){App()}
                 }
             }
         }
@@ -33,6 +34,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Composable
+fun App() {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Greeting(
+            name = "Android",
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
