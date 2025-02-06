@@ -30,9 +30,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sonusid.ollama.R
+import android.content.Intent
+import android.net.Uri
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
+
+fun openUrl(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(intent)
+}
 
 @Composable
 fun Settings() {
+    val context = LocalContext.current
     var gateway by remember { mutableStateOf("https://localhost:12345") }
     var valid by remember { mutableStateOf(true) }
     var social = listOf<SettingsData>(
@@ -72,12 +82,26 @@ fun Settings() {
                     }
                 }
             )
+        },
+        bottomBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.Center,
+            ) { Text("Ollama v1.0.0") }
         }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             items(social.size) { index ->
                 val value = social[index]
-                ElevatedButton(onClick = {}, modifier = Modifier.padding(10.dp).padding(horizontal = 20.dp)) {
+                ElevatedButton(
+                    onClick = {
+                        openUrl(context, value.url)
+                    }, modifier = Modifier
+                        .padding(10.dp)
+                        .padding(horizontal = 20.dp)
+                ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,

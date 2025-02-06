@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ollama</string>
+    <string name="version">1.0.0</string>
 </resources>
