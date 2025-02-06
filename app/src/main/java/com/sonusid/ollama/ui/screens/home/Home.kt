@@ -22,7 +22,6 @@ import com.sonusid.ollama.R
 fun Home(navHostController: NavHostController) {
 
     var userPrompt: String by remember { mutableStateOf("") }
-    val sample = listOf<String>("heyy","hello")
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
 
     val listState = rememberLazyListState()
@@ -50,7 +49,7 @@ fun Home(navHostController: NavHostController) {
                 }
                 Text("llama3.2", fontSize = 20.sp)
                 IconButton(onClick = {
-                    navHostController.navigate("settings")
+                    navHostController.navigate("setting")
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.settings),
@@ -74,7 +73,7 @@ fun Home(navHostController: NavHostController) {
                 ElevatedButton(
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
-                        messages.add("Message")
+                        messages.add("The message is Ollama Llama3.2 is lighter than others.")
                     }
                 ) {
                     Icon(
@@ -89,7 +88,7 @@ fun Home(navHostController: NavHostController) {
             )
         )
     }) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues), state = listState) {
+        LazyColumn(modifier = Modifier.padding(paddingValues).padding(16.dp), state = listState) {
             items(messages.size){
                 index -> ChatBubble(messages[index], (index%2==0))
             }
