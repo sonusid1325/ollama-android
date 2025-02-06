@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.db.AppDatabase
 import com.sonusid.ollama.db.repository.UserRepository
-import com.sonusid.ollama.ui.screens.Home
+import com.sonusid.ollama.ui.screens.home.Home
 import com.sonusid.ollama.ui.screens.settings.Settings
 import com.sonusid.ollama.ui.theme.OllamaTheme
 import com.sonusid.ollama.viewmodels.UserViewModel

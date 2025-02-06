@@ -1,4 +1,4 @@
-package com.sonusid.ollama.ui.screens
+package com.sonusid.ollama.ui.screens.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,11 +22,10 @@ import com.sonusid.ollama.R
 fun Home(navHostController: NavHostController) {
 
     var userPrompt: String by remember { mutableStateOf("") }
+    val sample = listOf<String>("heyy","hello")
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
 
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
             listState.animateScrollToItem(messages.size - 1)
@@ -92,7 +91,7 @@ fun Home(navHostController: NavHostController) {
     }) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues), state = listState) {
             items(messages.size){
-                index -> Text(messages[index])
+                index -> ChatBubble(messages[index], (index%2==0))
             }
         }
     }
