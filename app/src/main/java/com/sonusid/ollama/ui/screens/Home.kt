@@ -1,9 +1,9 @@
 package com.sonusid.ollama.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +20,16 @@ import com.sonusid.ollama.R
 @Composable
 fun Home(navHostController: NavHostController) {
     var userPrompt by remember { mutableStateOf("") }
+
+    var messages = remember { mutableStateListOf<String>() }
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
 
     Scaffold(topBar = {
         TopAppBar(title = {
@@ -60,7 +70,9 @@ fun Home(navHostController: NavHostController) {
             suffix = {
                 ElevatedButton(
                     contentPadding = PaddingValues(0.dp),
-                    onClick = {}
+                    onClick = {
+                        messages.add("Message")
+                    }
                 ) {
                     Icon(
                         painterResource(R.drawable.send), contentDescription = "Send Button"
@@ -74,8 +86,10 @@ fun Home(navHostController: NavHostController) {
             )
         )
     }) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            Text("Null")
+        LazyColumn(modifier = Modifier.padding(paddingValues), state = listState) {
+            items(messages.size){
+                index -> Text(messages[index])
+            }
         }
     }
 }
