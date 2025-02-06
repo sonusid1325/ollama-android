@@ -50,7 +50,7 @@ fun Home(navHostController: NavHostController) {
                 }
                 Text("llama3.2", fontSize = 20.sp)
                 IconButton(onClick = {
-                    navHostController.navigate("settings")
+                    navHostController.navigate("setting")
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.settings),
@@ -89,7 +89,7 @@ fun Home(navHostController: NavHostController) {
             )
         )
     }) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues), state = listState) {
+        LazyColumn(modifier = Modifier.padding(paddingValues).padding(16.dp), state = listState) {
             items(messages.size){
                 index -> ChatBubble(messages[index], (index%2==0))
             }
