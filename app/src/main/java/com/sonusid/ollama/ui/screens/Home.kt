@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,11 +21,11 @@ import com.sonusid.ollama.R
 @Composable
 fun Home(navHostController: NavHostController) {
 
-    var userPrompt by remember { mutableStateOf("") }
-
-    var messages = remember { mutableStateListOf<String>() }
+    var userPrompt: String by remember { mutableStateOf("") }
+    var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
 
     val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
