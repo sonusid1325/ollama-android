@@ -32,9 +32,6 @@ class MainActivity : ComponentActivity() {
         // Initialize ViewModel with Factory
         val factory = UserViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
-
-
-
         setContent {
         // Initialise navigation
         val navController = rememberNavController()
