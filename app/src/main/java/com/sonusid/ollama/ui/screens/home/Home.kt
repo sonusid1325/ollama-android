@@ -22,7 +22,6 @@ import com.sonusid.ollama.R
 fun Home(navHostController: NavHostController) {
 
     var userPrompt: String by remember { mutableStateOf("") }
-    val sample = listOf<String>("heyy","hello")
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
 
     val listState = rememberLazyListState()
