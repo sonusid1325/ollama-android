@@ -17,11 +17,12 @@ fun ChatBubble(
     isSentByMe: Boolean
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(10.dp),
         horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start
     ) {
         Box(
             modifier = Modifier
+                .widthIn(max = 250.dp)
                 .background(
                     color = if (isSentByMe) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
                     shape = RoundedCornerShape(16.dp)
@@ -31,7 +32,7 @@ fun ChatBubble(
             Text(
                 text = message,
                 color = if (isSentByMe) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = 16.sp
+                fontSize = 16.sp,
             )
         }
     }

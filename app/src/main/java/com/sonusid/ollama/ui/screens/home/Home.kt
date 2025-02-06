@@ -74,7 +74,7 @@ fun Home(navHostController: NavHostController) {
                 ElevatedButton(
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
-                        messages.add("Message")
+                        messages.add("The message is Ollama Llama3.2 is lighter than others.")
                     }
                 ) {
                     Icon(
