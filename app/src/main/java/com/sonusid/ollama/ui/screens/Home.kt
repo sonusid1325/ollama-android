@@ -19,6 +19,7 @@ import com.sonusid.ollama.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(navHostController: NavHostController) {
+
     var userPrompt by remember { mutableStateOf("") }
 
     var messages = remember { mutableStateListOf<String>() }
@@ -48,7 +49,9 @@ fun Home(navHostController: NavHostController) {
                     )
                 }
                 Text("llama3.2", fontSize = 20.sp)
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    navHostController.navigate("settings")
+                }) {
                     Icon(
                         painter = painterResource(R.drawable.settings),
                         contentDescription = "settings",

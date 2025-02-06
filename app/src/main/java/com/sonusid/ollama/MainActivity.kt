@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.db.AppDatabase
 import com.sonusid.ollama.db.repository.UserRepository
 import com.sonusid.ollama.ui.screens.Home
+import com.sonusid.ollama.ui.screens.settings.Settings
 import com.sonusid.ollama.ui.theme.OllamaTheme
 import com.sonusid.ollama.viewmodels.UserViewModel
 import com.sonusid.ollama.viewmodels.UserViewModelFactory
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
                     Column(modifier = Modifier.padding(innerPadding)) {
                         NavHost(navController=navController, startDestination = "home"){
                             composable("home") { Home(navController) }
+                            composable("setting") { Settings() }
                         }
                     }
                 }
