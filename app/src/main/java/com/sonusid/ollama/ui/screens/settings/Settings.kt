@@ -42,7 +42,7 @@ fun Settings() {
         SettingsData(
             url = "https://github.com/sponsors/sonusid1325",
             name = "GitHub Sponsor",
-            R.drawable.source
+            R.drawable.sponsor
         ),
         SettingsData(
             url = "https://buymeacoffee.com/sonusid1325",
