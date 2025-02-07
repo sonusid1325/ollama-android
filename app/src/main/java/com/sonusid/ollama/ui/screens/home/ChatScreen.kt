@@ -17,19 +17,34 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.R
+import com.sonusid.ollama.UiState
 import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navHostController: NavHostController, viewModel: OllamaViewModel = viewModel() ) {
+fun Home(navHostController: NavHostController, viewModel: OllamaViewModel ) {
 
+    val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
+    val isStateChanged by remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
             listState.animateScrollToItem(messages.size - 1)
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState){
+            is UiState.Success -> {
+                val response = (uiState as UiState.Success).outputText
+                messages.add(response)
+            }
+            is UiState.Error -> {
+                messages.add("Error: ${(uiState as UiState.Error).errorMessage}") // Handle errors
+            } else -> {}
         }
     }
 
@@ -75,7 +90,9 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel = view
                 ElevatedButton(
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
-                        viewModel.generateOllamaText(userPrompt)
+                        messages.add(userPrompt)
+                        userPrompt = ""
+                        viewModel.sendPrompt(messages.last())
                     }
                 ) {
                     Icon(
@@ -103,6 +120,6 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel = view
 fun HomePreview() {
     val dummyHost = rememberNavController()
     MaterialTheme(colorScheme = darkColorScheme()) {
-        Home(dummyHost)
+        Home(dummyHost, viewModel())
     }
 }
