@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ChatDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChat(chat: Chat)
 
@@ -13,5 +12,8 @@ interface ChatDao {
     fun getAllChats(): Flow<List<Chat>>
 
     @Delete
-    suspend fun deleteChat(user: Chat)
+    suspend fun deleteChat(chat: Chat)
+
+    @Update
+    suspend fun updateChat(chat: Chat)
 }
