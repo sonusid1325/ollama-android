@@ -24,6 +24,7 @@ class OllamaViewModel(private val repository: UserRepository) : ViewModel() {
             override fun onResponse(call: Call<OllamaResponse>, response: Response<OllamaResponse>) {
                 if (response.isSuccessful) {
                     Log.d("OllamaResponse", "Generated: ${response.body()?.response}")
+
                 } else {
                     Log.e("OllamaError", "Failed: ${response.errorBody()?.string()}")
                 }
