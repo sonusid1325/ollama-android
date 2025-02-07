@@ -19,7 +19,7 @@ import com.sonusid.ollama.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navHostController: NavHostController) {
+fun Home(navHostController: NavHostController, ) {
 
     var userPrompt: String by remember { mutableStateOf("") }
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
