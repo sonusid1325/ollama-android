@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel(private val repository: UserRepository) : ViewModel() {
+class OllamaViewModel(private val repository: UserRepository) : ViewModel() {
     val allUsers: Flow<List<User>> = repository.allUsers
 
     fun generateOllamaText(prompt: String) {

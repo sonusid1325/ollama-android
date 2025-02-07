@@ -17,11 +17,11 @@ import com.sonusid.ollama.db.repository.UserRepository
 import com.sonusid.ollama.ui.screens.home.Home
 import com.sonusid.ollama.ui.screens.settings.Settings
 import com.sonusid.ollama.ui.theme.OllamaTheme
-import com.sonusid.ollama.viewmodels.UserViewModel
-import com.sonusid.ollama.viewmodels.UserViewModelFactory
+import com.sonusid.ollama.viewmodels.OllamaViewModel
+import com.sonusid.ollama.viewmodels.OllamaVewModelFactory
 
 class MainActivity : ComponentActivity() {
-    private lateinit var viewModel: UserViewModel
+    private lateinit var viewModel: OllamaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
         val repository = UserRepository(database.userDao())
 
         // Initialize ViewModel with Factory
-        val factory = UserViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
+        val factory = OllamaVewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[OllamaViewModel::class.java]
         setContent {
         // Initialise navigation
         val navController = rememberNavController()
