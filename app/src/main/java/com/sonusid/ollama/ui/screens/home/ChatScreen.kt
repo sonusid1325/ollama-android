@@ -84,7 +84,8 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel ) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
-                .padding(bottom = 20.dp),
+                .padding(bottom = 10.dp)
+                .imePadding(),
             singleLine = true,
             suffix = {
                 ElevatedButton(

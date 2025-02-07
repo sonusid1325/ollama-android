@@ -37,6 +37,7 @@ class OllamaViewModel(private val repository: UserRepository) : ViewModel() {
                     response.body()?.response?.let{
                         output->
                         _uiState.value = UiState.Success(output)}
+
                 } else {
                     response.errorBody()?.string()?.let { error ->
                         _uiState.value = UiState.Error(error)
@@ -46,9 +47,13 @@ class OllamaViewModel(private val repository: UserRepository) : ViewModel() {
 
             override fun onFailure(call: Call<OllamaResponse>, t: Throwable) {
                 Log.e("OllamaError", "Request failed: ${t.message}")
+                t.message?.let{ error ->
+                    _uiState.value = UiState.Error(error)
+                }
             }
         })
 
+        _uiState.value = UiState.Initial
     }
 
     fun generateOllamaText(prompt: String) {
