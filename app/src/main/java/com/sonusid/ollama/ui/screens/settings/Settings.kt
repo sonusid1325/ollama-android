@@ -43,7 +43,7 @@ fun openUrl(context: Context, url: String) {
 @Composable
 fun Settings() {
     val context = LocalContext.current
-    var gateway by remember { mutableStateOf("https://localhost:12345") }
+    var gateway by remember { mutableStateOf("https://localhost:11434") }
     var valid by remember { mutableStateOf(true) }
     var social = listOf<SettingsData>(
         SettingsData(url = "https//github.com/sonusid1325", name = "GitHub", R.drawable.github),
@@ -63,7 +63,7 @@ fun Settings() {
             OutlinedTextField(
                 value = gateway,
                 onValueChange = { gateway = it },
-                placeholder = { Text("https://localhost:12345") },
+                placeholder = { Text("https://localhost:11434") },
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
