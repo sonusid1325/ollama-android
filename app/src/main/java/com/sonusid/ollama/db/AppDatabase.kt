@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sonusid.ollama.db.dao.UserDao
-import com.sonusid.ollama.db.entity.User
+import com.sonusid.ollama.db.entity.Chat
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [Chat::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao
+    abstract fun chatDao(): ChatDao
 
     companion object {
         @Volatile

@@ -10,24 +10,20 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.R
 import com.sonusid.ollama.UiState
 import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navHostController: NavHostController, viewModel: OllamaViewModel ) {
+fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
 
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
-    val isStateChanged by remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
     LaunchedEffect(messages.size) {
@@ -113,14 +109,5 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel ) {
                 index -> ChatBubble(messages[index], (index%2==0))
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
-    val dummyHost = rememberNavController()
-    MaterialTheme(colorScheme = darkColorScheme()) {
-        Home(dummyHost, viewModel())
     }
 }
