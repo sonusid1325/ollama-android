@@ -46,7 +46,7 @@ fun Settings() {
     var gateway by remember { mutableStateOf("https://localhost:11434") }
     var valid by remember { mutableStateOf(true) }
     var social = listOf<SettingsData>(
-        SettingsData(url = "https//github.com/sonusid1325", name = "GitHub", R.drawable.github),
+        SettingsData(url = "https://github.com/sonusid1325", name = "GitHub", R.drawable.github),
         SettingsData(
             url = "https://github.com/sponsors/sonusid1325",
             name = "GitHub Sponsor",
@@ -64,13 +64,15 @@ fun Settings() {
                 value = gateway,
                 onValueChange = { gateway = it },
                 placeholder = { Text("https://localhost:11434") },
+                label = { Text("Server") },
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(10.dp)
+                    .padding(top = 20.dp),
                 shape = CircleShape,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = if (valid) Color.Green else Color.Red,
+                    unfocusedBorderColor = if (valid) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
                     focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
                 ),
                 suffix = {

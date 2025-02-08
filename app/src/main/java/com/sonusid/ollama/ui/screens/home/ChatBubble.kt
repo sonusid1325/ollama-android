@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sonusid.ollama.ui.theme.notoSans
 
 @Composable
 fun ChatBubble(
@@ -31,6 +32,7 @@ fun ChatBubble(
         ) {
             Text(
                 text = message,
+                fontFamily = notoSans,
                 color = if (isSentByMe) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = 16.sp,
             )
