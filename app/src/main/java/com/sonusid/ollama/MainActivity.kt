@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.db.AppDatabase
+import com.sonusid.ollama.db.repository.ChatRepository
 import com.sonusid.ollama.db.repository.UserRepository
 import com.sonusid.ollama.ui.screens.home.Home
 import com.sonusid.ollama.ui.screens.settings.Settings
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
 
         // Initialize Database & Repository
         val database = AppDatabase.Companion.getDatabase(applicationContext)
-        val repository = UserRepository(database.userDao())
+        val repository = ChatRepository(database.chatDao())
 
         // Initialize ViewModel with Factory
         val factory = OllamaViewModelFactory(repository)

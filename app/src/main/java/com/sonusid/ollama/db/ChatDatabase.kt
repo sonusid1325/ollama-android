@@ -6,22 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.sonusid.ollama.db.dao.ChatDao
 import com.sonusid.ollama.db.dao.UserDao
+import com.sonusid.ollama.db.entity.Chat
 import com.sonusid.ollama.db.entity.User
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [Chat::class], version = 1, exportSchema = false)
+abstract class ChatDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: ChatDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): ChatDatabase {
             return INSTANCE ?: synchronized(this) {
                 val db = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
-                    "user_table"
+                    ChatDatabase::class.java,
+                    "chat-database"
                 ).build()
                 INSTANCE = db
                 db
