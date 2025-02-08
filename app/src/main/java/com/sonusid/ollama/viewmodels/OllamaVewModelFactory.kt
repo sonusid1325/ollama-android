@@ -2,7 +2,6 @@ package com.sonusid.ollama.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sonusid.ollama.db.repository.ChatRepository
 import com.sonusid.ollama.db.repository.UserRepository
 
 class OllamaViewModelFactory(private val repository: UserRepository) : ViewModelProvider.Factory {

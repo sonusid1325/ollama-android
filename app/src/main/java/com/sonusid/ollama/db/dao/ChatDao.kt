@@ -1,3 +1,4 @@
+package com.sonusid.ollama.db.dao
 
 import androidx.room.*
 import com.sonusid.ollama.db.entity.Chat
