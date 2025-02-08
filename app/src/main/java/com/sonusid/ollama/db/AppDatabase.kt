@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.sonusid.ollama.db.dao.UserDao
-import com.sonusid.ollama.db.entity.Chat
 import com.sonusid.ollama.db.entity.User
 
 @Database(entities = [User::class], version = 1, exportSchema = false)
