@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.sonusid.ollama"
     compileSdk = 35
 
@@ -40,31 +41,32 @@ android {
     }
 }
 
+
 dependencies {
     //Variables
-    val nav_version = "2.8.6"
-    val room_version = "2.6.1"
+    val navVersion = "2.8.6"
+    val roomVersion = "2.6.1"
 
     //implemented
     //noinspection UseTomlInstead
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
 
-    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
-    ksp("androidx.room:room-compiler:$room_version")
+//    ksp("androidx.room:room-compiler:$roomVersion")
 
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     // For APIs
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    
 
     //Generated
     implementation(libs.androidx.core.ktx)

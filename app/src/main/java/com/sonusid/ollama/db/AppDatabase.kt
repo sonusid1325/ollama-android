@@ -16,13 +16,13 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                val db = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "chat_table"
+                    "chat-db"
                 ).build()
-                INSTANCE = instance
-                instance
+                INSTANCE = db
+                db
             }
         }
     }

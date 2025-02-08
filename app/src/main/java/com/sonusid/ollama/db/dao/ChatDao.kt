@@ -13,7 +13,4 @@ interface ChatDao {
 
     @Delete
     suspend fun deleteChat(chat: Chat)
-
-    @Update
-    suspend fun updateChat(chat: Chat)
 }
