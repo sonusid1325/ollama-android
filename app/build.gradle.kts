@@ -53,11 +53,11 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
 
     // See Add the KSP plugin to your project
-//    ksp("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+//    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$roomVersion")

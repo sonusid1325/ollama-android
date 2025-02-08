@@ -7,9 +7,8 @@ import com.sonusid.ollama.UiState
 import com.sonusid.ollama.api.OllamaRequest
 import com.sonusid.ollama.api.OllamaResponse
 import com.sonusid.ollama.api.RetrofitClient
-import com.sonusid.ollama.db.entity.Chat
 import com.sonusid.ollama.db.entity.User
-import com.sonusid.ollama.db.repository.ChatRepository
+import com.sonusid.ollama.db.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,13 +18,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
+class OllamaViewModel(private val repository: UserRepository) : ViewModel() {
     private val _uiState : MutableStateFlow<UiState> =
         MutableStateFlow(UiState.Initial)
     val uiState: StateFlow<UiState> =
         _uiState.asStateFlow()
 
-    var allChats: Flow<List<Chat>> = repository.allChats
+    var allUsers: Flow<List<User>> = repository.allUsers
 
     fun sendPrompt(prompt: String){
         _uiState.value = UiState.Loading
@@ -76,13 +75,11 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
         })
     }
 
-    fun insert(chat: Chat) = viewModelScope.launch {
-        repository.insert(chat)
+    fun insert(user: User) = viewModelScope.launch {
+        repository.insert(user)
     }
 
-    fun delete(chat: Chat) = viewModelScope.launch {
-        repository.delete(chat)
+    fun delete(user: User) = viewModelScope.launch {
+        repository.delete(user)
     }
-
-
 }
