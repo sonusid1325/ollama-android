@@ -1,3 +1,4 @@
+package com.sonusid.ollama.db.dao
 
 import androidx.room.*
 import com.sonusid.ollama.db.entity.Chat
@@ -13,7 +14,4 @@ interface ChatDao {
 
     @Delete
     suspend fun deleteChat(chat: Chat)
-
-    @Update
-    suspend fun updateChat(chat: Chat)
 }

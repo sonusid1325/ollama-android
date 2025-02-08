@@ -13,8 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.db.AppDatabase
+import com.sonusid.ollama.db.ChatDatabase
 import com.sonusid.ollama.db.repository.ChatRepository
-import com.sonusid.ollama.db.repository.UserRepository
 import com.sonusid.ollama.ui.screens.home.Home
 import com.sonusid.ollama.ui.screens.settings.Settings
 import com.sonusid.ollama.ui.theme.OllamaTheme
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize Database & Repository
-        val database = AppDatabase.getDatabase(applicationContext)
+        val database = ChatDatabase.Companion.getDatabase(applicationContext)
         val repository = ChatRepository(database.chatDao())
 
         // Initialize ViewModel with Factory
@@ -36,14 +36,21 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this, factory)[OllamaViewModel::class.java]
 
         setContent {
-        // Initialise navigation
-        val navController = rememberNavController()
+            // Initialise navigation
+            val navController = rememberNavController()
             OllamaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(modifier = Modifier.padding(innerPadding)) {
-                        NavHost(navController=navController, startDestination = "home"){
-                            composable("home") { Home(navController, viewModel) }
-                            composable("setting") { Settings() }
+                        NavHost(
+                            navController = navController,
+                            startDestination = "home"
+                        ) {
+                            composable("home") {
+                                Home(navController, viewModel)
+                            }
+                            composable("setting") {
+                                Settings()
+                            }
                         }
                     }
                 }

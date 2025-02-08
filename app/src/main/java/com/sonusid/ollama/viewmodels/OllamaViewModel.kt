@@ -8,7 +8,6 @@ import com.sonusid.ollama.api.OllamaRequest
 import com.sonusid.ollama.api.OllamaResponse
 import com.sonusid.ollama.api.RetrofitClient
 import com.sonusid.ollama.db.entity.Chat
-import com.sonusid.ollama.db.entity.User
 import com.sonusid.ollama.db.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,7 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
     val uiState: StateFlow<UiState> =
         _uiState.asStateFlow()
 
-    var allChats: Flow<List<Chat>> = repository.allChats
+    var allUsers: Flow<List<Chat>> = repository.allChats
 
     fun sendPrompt(prompt: String){
         _uiState.value = UiState.Loading
@@ -83,6 +82,4 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
     fun delete(chat: Chat) = viewModelScope.launch {
         repository.delete(chat)
     }
-
-
 }
