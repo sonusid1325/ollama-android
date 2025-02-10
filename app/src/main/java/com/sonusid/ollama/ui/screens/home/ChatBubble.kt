@@ -4,21 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.sonusid.ollama.ui.theme.notoSans
+import dev.jeziellago.compose.markdowntext.MarkdownText
+
 
 @Composable
 fun ChatBubble(
     message: String,
-    isSentByMe: Boolean
+    isSentByMe: Boolean,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
         horizontalArrangement = if (isSentByMe) Arrangement.End else Arrangement.Start
     ) {
         Box(
@@ -30,12 +32,20 @@ fun ChatBubble(
                 )
                 .padding(12.dp)
         ) {
-            Text(
-                text = message,
-                fontFamily = notoSans,
-                color = if (isSentByMe) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = 16.sp,
+            MarkdownText(
+                message
             )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun chatPreview() {
+    Scaffold { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            ChatBubble("Heyy", isSentByMe = true)
+            ChatBubble("**Heyy**", isSentByMe = false)
         }
     }
 }
