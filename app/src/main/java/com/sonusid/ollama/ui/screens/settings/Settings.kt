@@ -1,5 +1,8 @@
 package com.sonusid.ollama.ui.screens.settings
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,15 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sonusid.ollama.R
-import android.content.Intent
-import android.net.Uri
-import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 
 fun openUrl(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -102,19 +101,19 @@ fun Settings() {
                         openUrl(context, value.url)
                     }, modifier = Modifier
                         .padding(10.dp)
-                        .padding(horizontal = 20.dp)
+//                        .padding(horizontal = 20.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.Start,
                     ) {
                         Icon(
                             painterResource(value.logo),
                             contentDescription = value.name,
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier.size(20.dp)
                         )
-                        Spacer(Modifier.width(5.dp))
+                        Spacer(Modifier.width(20.dp))
                         Text(value.name)
                     }
                 }
