@@ -1,6 +1,7 @@
 package com.sonusid.ollama.ui.screens.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -48,6 +49,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
                 is UiState.Error -> {
                     viewModel.insert(Chat(message = (uiState as UiState.Error).errorMessage))
                 }
+
                 else -> {}
             }
         }
@@ -123,14 +125,27 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             )
         )
     }) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp),
-            state = listState
-        ) {
-            items(allChats.value.size) { index ->
-                ChatBubble(allChats.value[index].message, (index % 2 == 0))
+        if (allChats.value.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(painterResource(R.drawable.logo), "logo", modifier = Modifier.size(100.dp))
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .padding(16.dp),
+                state = listState
+            ) {
+                items(allChats.value.size) { index ->
+                    ChatBubble(allChats.value[index].message, (index % 2 == 0))
+                }
             }
         }
     }
