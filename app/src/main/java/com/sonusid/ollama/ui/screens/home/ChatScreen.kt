@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.sonusid.ollama.R
 import com.sonusid.ollama.UiState
-import com.sonusid.ollama.db.entity.Chat
+import com.sonusid.ollama.db.entity.Message
 import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,11 +43,11 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             when (uiState) {
                 is UiState.Success -> {
                     val response = (uiState as UiState.Success).outputText
-                    viewModel.insert(Chat(message = response))
+                    viewModel.insert(Message(message = response))
                 }
 
                 is UiState.Error -> {
-                    viewModel.insert(Chat(message = (uiState as UiState.Error).errorMessage))
+                    viewModel.insert(Message(message = (uiState as UiState.Error).errorMessage))
                 }
 
                 else -> {}
@@ -103,7 +103,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (userPrompt.isNotEmpty()) {
-                            viewModel.insert(Chat(message = userPrompt))
+                            viewModel.insert(Message(message = userPrompt))
                             toggle = true
                             prompt = userPrompt
                             userPrompt = ""

@@ -1,18 +1,18 @@
 package com.sonusid.ollama.db.dao
 
 import androidx.room.*
-import com.sonusid.ollama.db.entity.Chat
+import com.sonusid.ollama.db.entity.Message
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ChatDao {
+interface MessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertChat(chat: Chat)
+    suspend fun insertChat(message: Message)
 
     @Query("SELECT * FROM chat_table")
-    fun getAllChats(): Flow<List<Chat>>
+    fun getAllChats(): Flow<List<Message>>
 
 
     @Delete
-    suspend fun deleteChat(chat: Chat)
+    suspend fun deleteChat(message: Message)
 }

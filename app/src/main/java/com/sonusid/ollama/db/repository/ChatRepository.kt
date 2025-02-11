@@ -1,19 +1,19 @@
 package com.sonusid.ollama.db.repository
 
-import com.sonusid.ollama.db.dao.ChatDao
-import com.sonusid.ollama.db.entity.Chat
+import com.sonusid.ollama.db.dao.MessageDao
+import com.sonusid.ollama.db.entity.Message
 import kotlinx.coroutines.flow.Flow
 
-class ChatRepository(private val chatDao: ChatDao) {
+class ChatRepository(private val messageDao: MessageDao) {
 
-    val allChats: Flow<List<Chat>> = chatDao.getAllChats()
+    val allChats: Flow<List<Message>> = messageDao.getAllChats()
 
-    suspend fun insert(chat: Chat){
-        chatDao.insertChat(chat)
+    suspend fun insert(message: Message){
+        messageDao.insertChat(message)
     }
 
-    suspend fun delete(chat: Chat){
-        chatDao.deleteChat(chat)
+    suspend fun delete(message: Message){
+        messageDao.deleteChat(message)
     }
     
 }
