@@ -24,7 +24,7 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
     val uiState: StateFlow<UiState> =
         _uiState.asStateFlow()
 
-    var allChats: Flow<List<Message>> = repository.allChats
+    var allMessages: Flow<List<Message>> = repository.allMessages
 
     fun sendPrompt(prompt: String){
         _uiState.value = UiState.Loading

@@ -26,7 +26,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     var userPrompt: String by remember { mutableStateOf("") }
     remember { mutableStateListOf<String>() }
     var prompt: String by remember { mutableStateOf("") }
-    val allChats = viewModel.allChats.collectAsState(initial = emptyList())
+    val allChats = viewModel.allMessages.collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(true) }
     var isLaunched by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }

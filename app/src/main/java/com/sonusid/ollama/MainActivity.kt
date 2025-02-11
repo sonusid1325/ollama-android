@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         // Initialize Database & Repository
         val database = ChatDatabase.Companion.getDatabase(applicationContext)
-        val repository = ChatRepository(database.chatDao())
+        val repository = ChatRepository(chatDao = database.chatDao(), messageDao = database.messageDao())
 
         // Initialize ViewModel with Factory
         val factory = OllamaViewModelFactory(repository)
