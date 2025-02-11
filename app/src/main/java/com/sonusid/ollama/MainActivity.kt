@@ -16,6 +16,7 @@ import com.sonusid.ollama.db.AppDatabase
 import com.sonusid.ollama.db.ChatDatabase
 import com.sonusid.ollama.db.repository.ChatRepository
 import com.sonusid.ollama.ui.screens.home.Home
+import com.sonusid.ollama.ui.screens.settings.About
 import com.sonusid.ollama.ui.screens.settings.Settings
 import com.sonusid.ollama.ui.theme.OllamaTheme
 import com.sonusid.ollama.viewmodels.OllamaViewModel
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             OllamaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
+                    Column(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
                         NavHost(
                             navController = navController,
                             startDestination = "home"
@@ -49,7 +50,10 @@ class MainActivity : ComponentActivity() {
                                 Home(navController, viewModel)
                             }
                             composable("setting") {
-                                Settings()
+                                Settings(navController)
+                            }
+                            composable("about") {
+                                About(navController)
                             }
                         }
                     }
