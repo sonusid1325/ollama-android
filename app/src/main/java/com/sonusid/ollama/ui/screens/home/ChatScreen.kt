@@ -24,6 +24,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
+    var isEnabled by remember { mutableStateOf(false) }
     rememberDrawerState(initialValue = DrawerValue.Closed)
     rememberCoroutineScope()
 
@@ -35,6 +36,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     }
 
     LaunchedEffect(uiState) {
+        isEnabled = !isEnabled
         when (uiState) {
             is UiState.Success -> {
                 val response = (uiState as UiState.Success).outputText
@@ -92,11 +94,15 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             singleLine = true,
             suffix = {
                 ElevatedButton(
+                    enabled = isEnabled,
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
-                        messages.add(userPrompt)
-                        userPrompt = ""
-                        viewModel.sendPrompt(messages.last())
+                        if (userPrompt.isNotEmpty()){
+                            messages.add(userPrompt)
+                            userPrompt = ""
+                            viewModel.sendPrompt(messages.last())
+                            isEnabled=!isEnabled
+                        }
                     }
                 ) {
                     Icon(
