@@ -8,6 +8,5 @@ import androidx.room.TypeConverters // Add this import
 @TypeConverters(StringListConverter::class) // Add this annotation
 data class Chat(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
-    val messages: List<String>,
+    val message: String,
 )

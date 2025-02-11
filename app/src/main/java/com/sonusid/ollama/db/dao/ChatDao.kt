@@ -12,6 +12,7 @@ interface ChatDao {
     @Query("SELECT * FROM chat_table")
     fun getAllChats(): Flow<List<Chat>>
 
+
     @Delete
     suspend fun deleteChat(chat: Chat)
 }

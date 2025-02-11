@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.sonusid.ollama.R
 import com.sonusid.ollama.UiState
+import com.sonusid.ollama.db.entity.Chat
 import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,15 +23,15 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
 
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
-    var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
+    remember { mutableStateListOf<String>() }
+    var prompt: String by remember { mutableStateOf("") }
+    val allChats = viewModel.allChats.collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(false) }
-    rememberDrawerState(initialValue = DrawerValue.Closed)
-    rememberCoroutineScope()
 
     val listState = rememberLazyListState()
-    LaunchedEffect(messages.size) {
-        if (messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
+    LaunchedEffect(allChats.value.size) {
+        if (allChats.value.isNotEmpty()) {
+            listState.animateScrollToItem(allChats.value.size - 1)
         }
     }
 
@@ -40,11 +40,11 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
         when (uiState) {
             is UiState.Success -> {
                 val response = (uiState as UiState.Success).outputText
-                messages.add(response)
+                viewModel.insert(Chat(message = response))
             }
 
             is UiState.Error -> {
-                messages.add("Error: ${(uiState as UiState.Error).errorMessage}") // Handle errors
+                viewModel.insert(Chat(message = (uiState as UiState.Error).errorMessage))
             }
 
             else -> {}
@@ -94,14 +94,16 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             singleLine = true,
             suffix = {
                 ElevatedButton(
-                    enabled = isEnabled,
+//                    enabled = isEnabled,
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
-                        if (userPrompt.isNotEmpty()){
-                            messages.add(userPrompt)
+                        if (userPrompt.isNotEmpty()) {
+                            viewModel.insert(Chat(message = userPrompt))
+                            prompt = userPrompt
                             userPrompt = ""
-                            viewModel.sendPrompt(messages.last())
-                            isEnabled=!isEnabled
+                            viewModel.sendPrompt(prompt)
+                            prompt=""
+                            isEnabled = !isEnabled
                         }
                     }
                 ) {
@@ -123,8 +125,8 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
                 .padding(16.dp),
             state = listState
         ) {
-            items(messages.size) { index ->
-                ChatBubble(messages[index], (index % 2 == 0))
+            items(allChats.value.size) { index ->
+                ChatBubble(allChats.value[index].message, (index % 2 == 0))
             }
         }
     }
