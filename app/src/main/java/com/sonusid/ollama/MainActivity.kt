@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                                 Home(navController, viewModel)
                             }
                             composable("setting") {
-                                Settings()
+                                Settings(navController)
                             }
                         }
                     }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +34,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.R
 
 fun openUrl(context: Context, url: String) {
@@ -39,8 +43,9 @@ fun openUrl(context: Context, url: String) {
     context.startActivity(intent)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Settings() {
+fun Settings(navgationController: NavController) {
     val context = LocalContext.current
     var gateway by remember { mutableStateOf("https://localhost:11434") }
     var valid by remember { mutableStateOf(true) }
@@ -59,29 +64,16 @@ fun Settings() {
     )
     Scaffold(
         topBar = {
-            OutlinedTextField(
-                value = gateway,
-                onValueChange = { gateway = it },
-                placeholder = { Text("https://localhost:11434") },
-                label = { Text("Server") },
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .padding(top = 20.dp),
-                shape = CircleShape,
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = if (valid) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
-                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
-                ),
-                suffix = {
-                    IconButton(onClick = {}, modifier = Modifier.size(25.dp)) {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = {}) {
                         Icon(
-                            painter = painterResource(R.drawable.save),
-                            contentDescription = "Save Address"
+                            painterResource(R.drawable.back),
+                            "exit"
                         )
                     }
-                }
+                },
+                title = { Text("Settings") }
             )
         },
         bottomBar = {
@@ -94,6 +86,33 @@ fun Settings() {
         }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
+            item {
+
+                OutlinedTextField(
+                    value = gateway,
+                    onValueChange = { gateway = it },
+                    placeholder = { Text("https://localhost:11434") },
+                    label = { Text("Server") },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .padding(top = 0.dp),
+                    shape = CircleShape,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = if (valid) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
+                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    suffix = {
+                        IconButton(onClick = {}, modifier = Modifier.size(25.dp)) {
+                            Icon(
+                                painter = painterResource(R.drawable.save),
+                                contentDescription = "Save Address"
+                            )
+                        }
+                    }
+                )
+            }
             items(social.size) { index ->
                 val value = social[index]
                 ElevatedButton(
@@ -101,10 +120,11 @@ fun Settings() {
                         openUrl(context, value.url)
                     }, modifier = Modifier
                         .padding(10.dp)
-//                        .padding(horizontal = 20.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp, horizontal = 5.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start,
                     ) {
@@ -126,7 +146,8 @@ fun Settings() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsPreview() {
+    val dummyNav = rememberNavController()
     MaterialTheme(colorScheme = darkColorScheme()) {
-        Settings()
+        Settings(dummyNav)
     }
 }
