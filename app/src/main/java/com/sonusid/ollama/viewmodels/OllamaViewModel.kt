@@ -39,7 +39,6 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
     fun allMessages(chatId: Int): Flow<List<Message>> = repository.getMessages(chatId)
 
 
-
     fun sendPrompt(prompt: String) {
         _uiState.value = UiState.Loading
 
@@ -95,6 +94,10 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
                 Log.e("OllamaError", "Request failed: ${t.message}")
             }
         })
+    }
+
+    fun insertChat(chat: Chat) = viewModelScope.launch {
+        repository.newChat(chat)
     }
 
     fun insert(message: Message) = viewModelScope.launch {

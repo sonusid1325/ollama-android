@@ -108,13 +108,12 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (userPrompt.isNotEmpty()) {
-                            viewModel.insert(Message(chatId = 0, message = userPrompt))
+                            viewModel.insert(Message(chatId = chatId, message = userPrompt))
                             toggle = true
                             prompt = userPrompt
                             userPrompt = ""
                             viewModel.sendPrompt(prompt)
                             prompt = ""
-
                         }
                     }
                 ) {
