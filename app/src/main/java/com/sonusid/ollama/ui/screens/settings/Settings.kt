@@ -66,7 +66,7 @@ fun Settings(navgationController: NavController) {
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {navgationController.popBackStack()}) {
                         Icon(
                             painterResource(R.drawable.back),
                             "exit"
