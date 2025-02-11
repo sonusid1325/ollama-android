@@ -9,3 +9,7 @@ import com.sonusid.ollama.R
 val notoSans = FontFamily(
     Font(R.font.notosans, FontWeight.Normal)
 )
+
+val lato_bold = FontFamily(
+    Font(R.font.latobold)
+)
