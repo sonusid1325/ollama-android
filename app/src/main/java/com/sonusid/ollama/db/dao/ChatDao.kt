@@ -8,11 +8,11 @@
     interface ChatDao {
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
-        suspend fun insertUser(chat: Chat)
+        suspend fun insertChat(chat: Chat)
 
         @Query("SELECT * FROM user_table")
-        fun getAllUsers(): Flow<List<Chat>>
+        fun getAllChats(): Flow<List<Chat>>
 
         @Delete
-        suspend fun deleteUser(chat: Chat)
+        suspend fun deleteChat(chat: Chat)
     }

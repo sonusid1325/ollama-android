@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 class UserRepository(private val chatDao: ChatDao) {
 
-    val allUsers: Flow<List<Chat>> = chatDao.getAllUsers()
+    val allUsers: Flow<List<Chat>> = chatDao.getAllChats()
 
     suspend fun insert(chat: Chat) {
-        chatDao.insertUser(chat)
+        chatDao.insertChat(chat)
     }
 
     suspend fun delete(chat: Chat) {
-        chatDao.deleteUser(chat)
+        chatDao.deleteChat(chat)
     }
 }
