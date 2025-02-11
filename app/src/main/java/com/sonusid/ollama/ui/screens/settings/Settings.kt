@@ -138,6 +138,30 @@ fun Settings(navgationController: NavController) {
                     }
                 }
             }
+            item{
+                ElevatedButton(
+                    onClick = {
+                        navgationController.navigate("about")
+                    }, modifier = Modifier
+                        .padding(10.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp, horizontal = 5.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.about),
+                            contentDescription = "About",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(Modifier.width(20.dp))
+                        Text("About")
+                    }
+                }
+            }
         }
     }
 }

@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             OllamaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
+                    Column(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
                         NavHost(
                             navController = navController,
                             startDestination = "home"
