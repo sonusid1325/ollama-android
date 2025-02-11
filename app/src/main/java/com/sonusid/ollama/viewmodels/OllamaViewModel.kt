@@ -24,10 +24,11 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
     val uiState: StateFlow<UiState> =
         _uiState.asStateFlow()
 
-    var allUsers: Flow<List<Chat>> = repository.allChats
+    var allChats: Flow<List<Chat>> = repository.allChats
 
     fun sendPrompt(prompt: String){
         _uiState.value = UiState.Loading
+
 
         val request = OllamaRequest(model = "qwen2.5-coder:0.5b", prompt = prompt)
 
