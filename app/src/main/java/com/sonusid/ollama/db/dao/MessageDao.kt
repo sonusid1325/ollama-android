@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertChat(message: Message)
+    suspend fun insertMessage(message: Message)
 
-    @Query("SELECT * FROM chat_table")
-    fun getAllChats(): Flow<List<Message>>
+    @Query("SELECT * FROM chat_table WHERE chatId = :chatId ")
+    fun getAllMessages(chatId: Int): Flow<List<Message>>
 
 
     @Delete
-    suspend fun deleteChat(message: Message)
+    suspend fun deleteMessage(message: Message)
 }

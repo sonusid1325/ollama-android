@@ -20,13 +20,13 @@ import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
+fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatId: Int = viewModel.chats.value.last().chatId+1) {
 
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
     remember { mutableStateListOf<String>() }
     var prompt: String by remember { mutableStateOf("") }
-    val allChats = viewModel.allChats.collectAsState(initial = emptyList())
+    val allChats = viewModel.allMessages(chatId).collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(true) }
     var isLaunched by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }
@@ -43,11 +43,16 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             when (uiState) {
                 is UiState.Success -> {
                     val response = (uiState as UiState.Success).outputText
-                    viewModel.insert(Message(message = response))
+                    viewModel.insert(Message(message = response, chatId = chatId))
                 }
 
                 is UiState.Error -> {
-                    viewModel.insert(Message(message = (uiState as UiState.Error).errorMessage))
+                    viewModel.insert(
+                        Message(
+                            message = (uiState as UiState.Error).errorMessage,
+                            chatId = chatId
+                        )
+                    )
                 }
 
                 else -> {}
@@ -103,13 +108,12 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (userPrompt.isNotEmpty()) {
-                            viewModel.insert(Message(message = userPrompt))
+                            viewModel.insert(Message(chatId = chatId, message = userPrompt))
                             toggle = true
                             prompt = userPrompt
                             userPrompt = ""
                             viewModel.sendPrompt(prompt)
                             prompt = ""
-
                         }
                     }
                 ) {
