@@ -24,6 +24,8 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
     var messages: SnapshotStateList<String> = remember { mutableStateListOf<String>() }
+    rememberDrawerState(initialValue = DrawerValue.Closed)
+    rememberCoroutineScope()
 
     val listState = rememberLazyListState()
     LaunchedEffect(messages.size) {
@@ -33,14 +35,17 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     }
 
     LaunchedEffect(uiState) {
-        when (uiState){
+        when (uiState) {
             is UiState.Success -> {
                 val response = (uiState as UiState.Success).outputText
                 messages.add(response)
             }
+
             is UiState.Error -> {
                 messages.add("Error: ${(uiState as UiState.Error).errorMessage}") // Handle errors
-            } else -> {}
+            }
+
+            else -> {}
         }
     }
 
@@ -53,7 +58,9 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+
+                }) {
                     Icon(
                         painter = painterResource(R.drawable.logo),
                         contentDescription = "logo",
@@ -104,10 +111,17 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             )
         )
     }) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues).padding(16.dp), state = listState) {
-            items(messages.size){
-                index -> ChatBubble(messages[index], (index%2==0))
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp),
+            state = listState
+        ) {
+            items(messages.size) { index ->
+                ChatBubble(messages[index], (index % 2 == 0))
             }
         }
     }
 }
+
+
