@@ -26,7 +26,9 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     remember { mutableStateListOf<String>() }
     var prompt: String by remember { mutableStateOf("") }
     val allChats = viewModel.allChats.collectAsState(initial = emptyList())
-    var isEnabled by remember { mutableStateOf(false) }
+    var isEnabled by remember { mutableStateOf(true) }
+    var isLaunched by remember { mutableStateOf(true) }
+    var toggle by remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
     LaunchedEffect(allChats.value.size) {
@@ -36,20 +38,21 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
     }
 
     LaunchedEffect(uiState) {
-        isEnabled = !isEnabled
-        when (uiState) {
-            is UiState.Success -> {
-                val response = (uiState as UiState.Success).outputText
-                viewModel.insert(Chat(message = response))
-            }
+        if (toggle) {
+            when (uiState) {
+                is UiState.Success -> {
+                    val response = (uiState as UiState.Success).outputText
+                    viewModel.insert(Chat(message = response))
+                }
 
-            is UiState.Error -> {
-                viewModel.insert(Chat(message = (uiState as UiState.Error).errorMessage))
+                is UiState.Error -> {
+                    viewModel.insert(Chat(message = (uiState as UiState.Error).errorMessage))
+                }
+                else -> {}
             }
-
-            else -> {}
         }
     }
+
 
     Scaffold(topBar = {
         TopAppBar(title = {
@@ -94,16 +97,17 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel) {
             singleLine = true,
             suffix = {
                 ElevatedButton(
-//                    enabled = isEnabled,
+                    enabled = isEnabled,
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (userPrompt.isNotEmpty()) {
                             viewModel.insert(Chat(message = userPrompt))
+                            toggle = true
                             prompt = userPrompt
                             userPrompt = ""
                             viewModel.sendPrompt(prompt)
-                            prompt=""
-                            isEnabled = !isEnabled
+                            prompt = ""
+
                         }
                     }
                 ) {

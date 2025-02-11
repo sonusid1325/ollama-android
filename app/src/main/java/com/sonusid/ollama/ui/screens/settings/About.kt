@@ -38,6 +38,7 @@ import com.sonusid.ollama.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun About(navController: NavController) {
+
     var social = listOf<SettingsData>(
         SettingsData(url = "https://github.com/sonusid1325", name = "GitHub", R.drawable.github),
         SettingsData(
