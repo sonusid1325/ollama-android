@@ -45,7 +45,7 @@ fun Chats(navController: NavController, viewModel: OllamaViewModel) {
                             modifier = Modifier.size(30.dp)
                         )
                     }
-                    Text("llama3.2", fontSize = 20.sp)
+                    Text("Ollama", fontSize = 20.sp)
                     IconButton(onClick = {
                         navController.navigate("setting")
                     }) {
