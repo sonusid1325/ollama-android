@@ -3,6 +3,7 @@ package com.sonusid.ollama.ui.screens.chats
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -97,15 +98,18 @@ fun Chats(navController: NavController, viewModel: OllamaViewModel) {
             ) {
                 items(allChats.value.size) { index ->
                     ElevatedButton(
+                        elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 10.dp),
+                        shape = RoundedCornerShape(10.dp),
                         contentPadding = PaddingValues(0.dp),
                         modifier = Modifier
                             .fillMaxWidth()
+                            .height(80.dp)
                             .padding(10.dp)
                             .size(40.dp),
                         onClick = {
                             navController.navigate("chat/${allChats.value[index].chatId}")
                         }) {
-                        Row(Modifier.padding(10.dp)) { Text(allChats.value[index].title) }
+                        Row(Modifier.padding(10.dp)) { Text("${allChats.value[index].title}.") }
                     }
                 }
             }
