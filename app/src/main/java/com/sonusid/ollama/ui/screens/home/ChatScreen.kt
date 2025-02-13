@@ -28,7 +28,6 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
     var prompt: String by remember { mutableStateOf("") }
     val allChats = viewModel.allMessages(chatId).collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(true) }
-    var isLaunched by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
