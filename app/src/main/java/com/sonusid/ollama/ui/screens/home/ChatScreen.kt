@@ -70,7 +70,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(onClick = {
-
+                    navHostController.navigate("chats")
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.logo),
