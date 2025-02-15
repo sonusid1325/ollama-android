@@ -20,7 +20,11 @@ import com.sonusid.ollama.viewmodels.OllamaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatId: Int = viewModel.chats.value.last().chatId+1) {
+fun Home(
+    navHostController: NavHostController,
+    viewModel: OllamaViewModel,
+    chatId: Int = viewModel.chats.value.last().chatId + 1,
+) {
 
     val uiState by viewModel.uiState.collectAsState()
     var userPrompt: String by remember { mutableStateOf("") }
@@ -29,6 +33,7 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
     val allChats = viewModel.allMessages(chatId).collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }
+    var placeholder by remember {mutableStateOf("Enter your prompt...")}
 
     val listState = rememberLazyListState()
     LaunchedEffect(allChats.value.size) {
@@ -43,6 +48,8 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                 is UiState.Success -> {
                     val response = (uiState as UiState.Success).outputText
                     viewModel.insert(Message(message = response, chatId = chatId))
+                    isEnabled = true
+                    placeholder = "Enter your prompt..."
                 }
 
                 is UiState.Error -> {
@@ -52,13 +59,16 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                             chatId = chatId
                         )
                     )
+                    isEnabled = true
+                    placeholder = "Enter your prompt..."
                 }
 
-                else -> {}
+                else -> {
+                    isEnabled = true
+                }
             }
         }
     }
-
 
     Scaffold(topBar = {
         TopAppBar(title = {
@@ -101,12 +111,15 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                 .padding(bottom = 10.dp)
                 .imePadding(),
             singleLine = true,
+
             suffix = {
                 ElevatedButton(
                     enabled = isEnabled,
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (userPrompt.isNotEmpty()) {
+                            isEnabled = false
+                            placeholder = "I'm thinking ... "
                             viewModel.insert(Message(chatId = chatId, message = userPrompt))
                             toggle = true
                             prompt = userPrompt
@@ -121,7 +134,17 @@ fun Home(navHostController: NavHostController, viewModel: OllamaViewModel, chatI
                     )
                 }
             },
-            placeholder = { Text("Enter your prompt...", fontSize = 15.sp) },
+            prefix = {
+                Row {
+                    Icon(
+                        painterResource(R.drawable.logo),
+                        contentDescription = "Logo",
+                        Modifier.size(25.dp)
+                    )
+                    Spacer(Modifier.width(5.dp))
+                }
+            },
+            placeholder = { Text(placeholder, fontSize = 15.sp) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
                 focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
