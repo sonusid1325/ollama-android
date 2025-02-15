@@ -74,28 +74,6 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
         _uiState.value = UiState.Initial
     }
 
-    fun generateOllamaText(prompt: String) {
-        val request = OllamaRequest(model = "qwen2.5-coder:0.5b", prompt = prompt)
-
-        RetrofitClient.instance.generateText(request).enqueue(object : Callback<OllamaResponse> {
-            override fun onResponse(
-                call: Call<OllamaResponse>,
-                response: Response<OllamaResponse>,
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("OllamaResponse", "Generated: ${response.body()?.response}")
-
-                } else {
-                    Log.e("OllamaError", "Failed: ${response.errorBody()?.string()}")
-                }
-            }
-
-            override fun onFailure(call: Call<OllamaResponse>, t: Throwable) {
-                Log.e("OllamaError", "Request failed: ${t.message}")
-            }
-        })
-    }
-
     fun insertChat(chat: Chat) = viewModelScope.launch {
         repository.newChat(chat)
     }

@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sonusid.ollama.db.dao.ChatDao
-import com.sonusid.ollama.db.entity.Chat
+import com.sonusid.ollama.db.dao.BaseUrlDao
+import com.sonusid.ollama.db.entity.BaseUrl
 
-@Database(entities = [Chat::class], version = 1, exportSchema = false)
+@Database(entities = [BaseUrl::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): ChatDao
+    abstract fun baseUrlDao(): BaseUrlDao
 
     companion object {
         @Volatile
@@ -17,13 +17,13 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val db = Room.databaseBuilder(
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "user_table"
+                    "app_database"
                 ).build()
-                INSTANCE = db
-                db
+                INSTANCE = instance
+                instance
             }
         }
     }
