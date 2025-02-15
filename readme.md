@@ -21,9 +21,13 @@ A minimal and efficient Android client for running Ollama AI models on your devi
 ### Chat Interface
 <img src="Screenshots/05.png" width="250" />  <img src="Screenshots/06.png" width="250" />
 
-### Settings
 <img src="Screenshots/07.png" width="250" />  <img src="Screenshots/08.png" width="250" />
 
+### Settings
+
+<img src="Screenshots/10.png" width="250" />  <img src="Screenshots/06.png" width="250" />
+
+<img src="Screenshots/11.png" width="250" />  <img src="Screenshots/08.png" width="250" />
 ## Installation
 
 1. **Download** the latest APK from [GitHub Releases](#).
