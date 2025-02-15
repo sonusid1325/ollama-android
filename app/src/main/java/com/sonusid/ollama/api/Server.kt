@@ -17,7 +17,7 @@ object RetrofitClient {
         .writeTimeout(120, TimeUnit.SECONDS)
         .build()
 
-    private lateinit var retrofit: Retrofit
+    private var retrofit: Retrofit? = null // Make retrofit nullable
 
     fun initialize(baseUrlDao: BaseUrlDao) {
         runBlocking {
@@ -25,7 +25,7 @@ object RetrofitClient {
             BASE_URL = baseUrlFromDb?.url ?: BASE_URL // Use default if DB is empty
         }
 
-        retrofit = Retrofit.Builder()
+        retrofit = Retrofit.Builder() // Initialize retrofit here
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
@@ -33,6 +33,6 @@ object RetrofitClient {
     }
 
     val instance: OllamaApiService by lazy {
-        retrofit.create(OllamaApiService::class.java)
+        retrofit?.create(OllamaApiService::class.java) ?: error("RetrofitClient must be initialized!")
     }
 }
