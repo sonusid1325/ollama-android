@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private var BASE_URL: String = "http://192.168.67.25:11434/" // Default URL
+    private var BASE_URL: String = "localhost:11434/" // Default URL
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)
@@ -23,10 +23,11 @@ object RetrofitClient {
         runBlocking {
             val baseUrlFromDb = baseUrlDao.getBaseUrl()
             BASE_URL = baseUrlFromDb?.url ?: BASE_URL // Use default if DB is empty
+
         }
 
         retrofit = Retrofit.Builder() // Initialize retrofit here
-            .baseUrl(BASE_URL)
+            .baseUrl("http://${BASE_URL}")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

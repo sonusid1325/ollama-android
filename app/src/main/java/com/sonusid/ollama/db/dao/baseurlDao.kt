@@ -14,7 +14,4 @@ interface BaseUrlDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBaseUrl(baseUrl: BaseUrl)
-
-    @Query("UPDATE base_url SET url = :newUrl WHERE id = 1")
-    suspend fun updateUrl(newUrl: String)
 }
