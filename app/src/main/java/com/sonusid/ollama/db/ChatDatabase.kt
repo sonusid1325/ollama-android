@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sonusid.ollama.db.dao.BaseUrlDao
 import com.sonusid.ollama.db.dao.ChatDao
 import com.sonusid.ollama.db.dao.MessageDao
 import com.sonusid.ollama.db.entity.Chat

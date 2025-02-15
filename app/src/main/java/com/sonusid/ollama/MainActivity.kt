@@ -14,8 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.sonusid.ollama.api.RetrofitClient
 import com.sonusid.ollama.db.AppDatabase
 import com.sonusid.ollama.db.ChatDatabase
+import com.sonusid.ollama.db.dao.BaseUrlDao
 import com.sonusid.ollama.db.repository.ChatRepository
 import com.sonusid.ollama.ui.screens.chats.Chats
 import com.sonusid.ollama.ui.screens.home.Home
@@ -39,6 +41,9 @@ class MainActivity : ComponentActivity() {
         // Initialize ViewModel with Factory
         val factory = OllamaViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[OllamaViewModel::class.java]
+        val baseUrlDataBase = AppDatabase.getDatabase(this) // 'this' is the Application context
+        val baseUrlDao = baseUrlDataBase.baseUrlDao() // Get the DAO instance
+        RetrofitClient.initialize(baseUrlDao)
 
         setContent {
             // Initialise navigation

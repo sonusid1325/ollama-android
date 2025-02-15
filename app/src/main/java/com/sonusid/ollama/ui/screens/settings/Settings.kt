@@ -24,9 +24,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +39,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.R
+import com.sonusid.ollama.db.AppDatabase
+import com.sonusid.ollama.db.entity.BaseUrl
+import kotlinx.coroutines.launch
+import android.os.Process // Import this!
+import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 
 fun openUrl(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -47,7 +61,10 @@ fun openUrl(context: Context, url: String) {
 @Composable
 fun Settings(navgationController: NavController) {
     val context = LocalContext.current
-    var gateway by remember { mutableStateOf("https://localhost:11434") }
+    val scope = rememberCoroutineScope()
+    val db = AppDatabase.getDatabase(context)
+    val baseUrlDao = db.baseUrlDao()
+    var gateway by remember { mutableStateOf("localhost:11434") }
     var valid by remember { mutableStateOf(true) }
     var social = listOf<SettingsData>(
         SettingsData(url = "https://github.com/sonusid1325", name = "GitHub", R.drawable.github),
@@ -62,11 +79,18 @@ fun Settings(navgationController: NavController) {
             R.drawable.coffee
         ),
     )
+    LaunchedEffect(Unit) {
+        val storedUrl = baseUrlDao.getBaseUrl()
+        if (storedUrl != null) {
+            gateway = storedUrl.url
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = {navgationController.popBackStack()}) {
+                    IconButton(onClick = { navgationController.popBackStack() }) {
                         Icon(
                             painterResource(R.drawable.back),
                             "exit"
@@ -91,7 +115,7 @@ fun Settings(navgationController: NavController) {
                 OutlinedTextField(
                     value = gateway,
                     onValueChange = { gateway = it },
-                    placeholder = { Text("https://localhost:11434") },
+                    placeholder = { Text("localhost:11434") },
                     label = { Text("Server") },
                     singleLine = true,
                     modifier = Modifier
@@ -100,11 +124,23 @@ fun Settings(navgationController: NavController) {
                         .padding(top = 0.dp),
                     shape = CircleShape,
                     colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = if (valid) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
+                        unfocusedBorderColor = if (valid) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.error,
                         focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
                     ),
                     suffix = {
-                        IconButton(onClick = {}, modifier = Modifier.size(25.dp)) {
+                        ElevatedButton(onClick = {
+                            scope.launch {
+                                val baseUrl =
+                                    BaseUrl(url = gateway)
+                                baseUrlDao.insertBaseUrl(baseUrl)
+                                val intent =
+                                    context.packageManager.getLaunchIntentForPackage(context.packageName)
+                                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // Important flags
+                                context.startActivity(intent)
+                                Process.killProcess(Process.myPid())
+
+                            }
+                        }, modifier = Modifier.size(25.dp)) {
                             Icon(
                                 painter = painterResource(R.drawable.save),
                                 contentDescription = "Save Address"
@@ -138,7 +174,7 @@ fun Settings(navgationController: NavController) {
                     }
                 }
             }
-            item{
+            item {
                 ElevatedButton(
                     onClick = {
                         navgationController.navigate("about")
@@ -166,6 +202,22 @@ fun Settings(navgationController: NavController) {
     }
 }
 
+suspend fun isValidURL(urlString: String): Boolean = withContext(Dispatchers.IO) {
+    try {
+        val url = URL(urlString) // Check URL format
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+
+        val response = client.newCall(request).execute()  // Make a request (empty)
+        response.close() // Important: Close the response
+        response.isSuccessful // Check if the response indicates success (2xx or 3xx status codes)
+
+    } catch (e: MalformedURLException) {
+        false // Invalid URL format
+    } catch (e: IOException) {
+        false // Network error or other IO issues
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
