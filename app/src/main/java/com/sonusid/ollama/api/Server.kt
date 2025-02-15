@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private var BASE_URL: String = "localhost:11434/" // Default URL
+    var BASE_URL: String = "localhost:11434/" // Default URL
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)

@@ -10,4 +10,6 @@ sealed interface UiState {
     data class Success(val outputText: String) : UiState
 
     data class Error(val errorMessage: String) : UiState
+
+    data class ModelsLoaded(val models: List<String>) : UiState
 }

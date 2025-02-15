@@ -1,5 +1,6 @@
 package com.sonusid.ollama.db.repository
 
+import com.sonusid.ollama.db.dao.BaseUrlDao
 import com.sonusid.ollama.db.dao.ChatDao
 import com.sonusid.ollama.db.dao.MessageDao
 import com.sonusid.ollama.db.entity.Chat

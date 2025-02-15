@@ -1,5 +1,7 @@
 package com.sonusid.ollama.ui.screens.home
 
+import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,19 +29,28 @@ fun Home(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+    val interactionSource = remember { MutableInteractionSource() }
     var userPrompt: String by remember { mutableStateOf("") }
     remember { mutableStateListOf<String>() }
     var prompt: String by remember { mutableStateOf("") }
     val allChats = viewModel.allMessages(chatId).collectAsState(initial = emptyList())
     var isEnabled by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }
-    var placeholder by remember {mutableStateOf("Enter your prompt...")}
-
+    var placeholder by remember { mutableStateOf("Enter your prompt ...") }
+    var showModelSelectionDialog by remember { mutableStateOf(false) }
+    var selectedModel by remember { mutableStateOf<String?>(null) }
+    val availableModels by viewModel.availableModels.collectAsState()
     val listState = rememberLazyListState()
+
+
     LaunchedEffect(allChats.value.size) {
         if (allChats.value.isNotEmpty()) {
             listState.animateScrollToItem(allChats.value.size - 1)
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadAvailableModels()
     }
 
     LaunchedEffect(uiState) {
@@ -55,8 +66,7 @@ fun Home(
                 is UiState.Error -> {
                     viewModel.insert(
                         Message(
-                            message = (uiState as UiState.Error).errorMessage,
-                            chatId = chatId
+                            message = (uiState as UiState.Error).errorMessage, chatId = chatId
                         )
                     )
                     isEnabled = true
@@ -88,7 +98,20 @@ fun Home(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                Text("llama3.2", fontSize = 20.sp)
+
+                // Model selection button:
+                TextButton(onClick = {
+                    showModelSelectionDialog = true
+                }) {
+                    Text(
+                        if (selectedModel.isNullOrEmpty()) {
+                            "Ollama"
+                        } else {
+                            selectedModel.toString()
+                        }, fontSize = 20.sp
+                    ) // Display selected model
+                }
+
                 IconButton(onClick = {
                     navHostController.navigate("setting")
                 }) {
@@ -102,39 +125,8 @@ fun Home(
         })
     }, bottomBar = {
         OutlinedTextField(
-            value = userPrompt,
-            onValueChange = { userPrompt = it },
-            shape = CircleShape,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 10.dp)
-                .imePadding(),
-            singleLine = true,
-
-            suffix = {
-                ElevatedButton(
-                    enabled = isEnabled,
-                    contentPadding = PaddingValues(0.dp),
-                    onClick = {
-                        if (userPrompt.isNotEmpty()) {
-                            isEnabled = false
-                            placeholder = "I'm thinking ... "
-                            viewModel.insert(Message(chatId = chatId, message = userPrompt))
-                            toggle = true
-                            prompt = userPrompt
-                            userPrompt = ""
-                            viewModel.sendPrompt(prompt)
-                            prompt = ""
-                        }
-                    }
-                ) {
-                    Icon(
-                        painterResource(R.drawable.send), contentDescription = "Send Button"
-                    )
-                }
-            },
-            prefix = {
+            interactionSource = interactionSource,
+            label = {
                 Row {
                     Icon(
                         painterResource(R.drawable.logo),
@@ -142,6 +134,47 @@ fun Home(
                         Modifier.size(25.dp)
                     )
                     Spacer(Modifier.width(5.dp))
+                    Text("Ask llama")
+                }
+            },
+            value = userPrompt,
+            onValueChange = { userPrompt = it },
+            shape = CircleShape,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 5.dp)
+                .imePadding(),
+            singleLine = true,
+
+            suffix = {
+                ElevatedButton(enabled = isEnabled,
+                    contentPadding = PaddingValues(0.dp),
+                    onClick = {
+                        if (selectedModel != null) {
+                            if (userPrompt.isNotEmpty()) {
+                                isEnabled = false
+                                placeholder = "I'm thinking ... "
+                                viewModel.insert(Message(chatId = chatId, message = userPrompt))
+                                toggle = true
+                                prompt = userPrompt
+                                userPrompt = ""
+                                viewModel.sendPrompt(prompt, selectedModel)
+                                prompt = ""
+                            }
+                        } else {
+                            viewModel.insert(Message(chatId = chatId, message = userPrompt))
+                            userPrompt = ""
+                            viewModel.insert(
+                                Message(
+                                    chatId = chatId, message = "Please Choose a model"
+                                )
+                            )
+                        }
+                    }) {
+                    Icon(
+                        painterResource(R.drawable.send), contentDescription = "Send Button"
+                    )
                 }
             },
             placeholder = { Text(placeholder, fontSize = 15.sp) },
@@ -151,6 +184,29 @@ fun Home(
             )
         )
     }) { paddingValues ->
+
+        // Model Selection Dialog
+        if (showModelSelectionDialog) {
+            AlertDialog(onDismissRequest = { showModelSelectionDialog = false },
+                title = { Text("Select Model") },
+                text = {
+                    Column {
+                        availableModels.forEach { model ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = model.name == selectedModel,
+                                    onClick = { selectedModel = model.name })
+                                Text(model.name)
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = { showModelSelectionDialog = false }) {
+                        Text("OK")
+                    }
+                })
+        }
+
         if (allChats.value.isEmpty()) {
             Column(
                 modifier = Modifier
