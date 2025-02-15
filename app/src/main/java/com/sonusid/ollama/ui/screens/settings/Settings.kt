@@ -3,6 +3,7 @@ package com.sonusid.ollama.ui.screens.settings
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Process
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,10 +42,8 @@ import androidx.navigation.compose.rememberNavController
 import com.sonusid.ollama.R
 import com.sonusid.ollama.db.AppDatabase
 import com.sonusid.ollama.db.entity.BaseUrl
-import kotlinx.coroutines.launch
-import android.os.Process // Import this!
-import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -111,7 +110,6 @@ fun Settings(navgationController: NavController) {
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             item {
-
                 OutlinedTextField(
                     value = gateway,
                     onValueChange = { gateway = it },
@@ -128,7 +126,7 @@ fun Settings(navgationController: NavController) {
                         focusedBorderColor = MaterialTheme.colorScheme.primaryContainer
                     ),
                     suffix = {
-                        ElevatedButton(onClick = {
+                        IconButton(onClick = {
                             scope.launch {
                                 val baseUrl =
                                     BaseUrl(url = gateway)
