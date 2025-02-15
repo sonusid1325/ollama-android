@@ -112,7 +112,7 @@ class OllamaViewModel(private val repository: ChatRepository) : ViewModel() {
 
             } catch (e: Exception) {
                 Log.e("OllamaError", "Error loading models: ${e.message}")
-                _availableModels.value = listOf<ModelInfo>(ModelInfo(e.message.toString()))
+                _availableModels.value = listOf<ModelInfo>(ModelInfo("NaN"))
             }
         }
         _uiState.value = UiState.Initial

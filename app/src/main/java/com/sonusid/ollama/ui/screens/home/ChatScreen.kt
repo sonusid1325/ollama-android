@@ -34,7 +34,6 @@ fun Home(
     remember { mutableStateListOf<String>() }
     var prompt: String by remember { mutableStateOf("") }
     val allChats = viewModel.allMessages(chatId).collectAsState(initial = emptyList())
-    var isEnabled by remember { mutableStateOf(true) }
     var toggle by remember { mutableStateOf(false) }
     var placeholder by remember { mutableStateOf("Enter your prompt ...") }
     var showModelSelectionDialog by remember { mutableStateOf(false) }
@@ -58,23 +57,20 @@ fun Home(
             when (uiState) {
                 is UiState.Success -> {
                     val response = (uiState as UiState.Success).outputText
-                    viewModel.insert(Message(message = response, chatId = chatId))
-                    isEnabled = true
+                    viewModel.insert(Message(message = response, chatId = chatId, isSendbyMe = false))
                     placeholder = "Enter your prompt..."
                 }
 
                 is UiState.Error -> {
                     viewModel.insert(
                         Message(
-                            message = (uiState as UiState.Error).errorMessage, chatId = chatId
+                            message = (uiState as UiState.Error).errorMessage, chatId = chatId, isSendbyMe = false
                         )
                     )
-                    isEnabled = true
                     placeholder = "Enter your prompt..."
                 }
 
                 else -> {
-                    isEnabled = true
                 }
             }
         }
@@ -146,16 +142,14 @@ fun Home(
                 .padding(bottom = 5.dp)
                 .imePadding(),
             singleLine = true,
-
             suffix = {
-                ElevatedButton(enabled = isEnabled,
+                ElevatedButton(
                     contentPadding = PaddingValues(0.dp),
                     onClick = {
                         if (selectedModel != null) {
                             if (userPrompt.isNotEmpty()) {
-                                isEnabled = false
                                 placeholder = "I'm thinking ... "
-                                viewModel.insert(Message(chatId = chatId, message = userPrompt))
+                                viewModel.insert(Message(chatId = chatId, message = userPrompt, isSendbyMe = true))
                                 toggle = true
                                 prompt = userPrompt
                                 userPrompt = ""
@@ -163,11 +157,11 @@ fun Home(
                                 prompt = ""
                             }
                         } else {
-                            viewModel.insert(Message(chatId = chatId, message = userPrompt))
+                            viewModel.insert(Message(chatId = chatId, message = userPrompt, isSendbyMe = true))
                             userPrompt = ""
                             viewModel.insert(
                                 Message(
-                                    chatId = chatId, message = "Please Choose a model"
+                                    chatId = chatId, message = "Please Choose a model", isSendbyMe = false
                                 )
                             )
                         }
@@ -226,7 +220,7 @@ fun Home(
                 state = listState
             ) {
                 items(allChats.value.size) { index ->
-                    ChatBubble(allChats.value[index].message, (index % 2 == 0))
+                    ChatBubble(allChats.value[index].message, allChats.value[index].isSendbyMe)
                 }
             }
         }
