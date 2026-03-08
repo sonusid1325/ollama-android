@@ -1,12 +1,10 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        // Google hosts AGP/AndroidX, Maven Central covers most libraries, and
+        // Gradle Plugin Portal provides the Kotlin Android plugin (2.0.21),
+        // so the combination guarantees plugin resolution without third-party
+        // repositories or group filtering.
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -16,7 +14,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        maven(url = "https://jitpack.io")
     }
 }
 

@@ -1,4 +1,27 @@
 <resources>
     <string name="app_name">Ollama</string>
     <string name="version">1.0.0</string>
+    <string name="sprite_tab_image_adjust">画像調整</string>
+    <string name="sprite_tab_frame_edit">フレーム編集</string>
+    <string name="sprite_tab_animation_check">アニメ確認</string>
+    <string name="sprite_tab_status">ステータス</string>
+    <string name="sprite_preview_grid_title">9フレーム（3×3）</string>
+    <string name="sprite_animation_settings_title">アニメ設定</string>
+    <string name="sprite_animation_settings_selected">現在: %1$s</string>
+    <string name="sprite_frame_label">Frame %1$d</string>
+    <string name="sprite_frame_preview_cd">Frame %1$d プレビュー</string>
+    <string name="sprite_frame_select_cd">Frame %1$d を選択</string>
+    <string name="sprite_selected_frame_preview_cd">選択中のフレームプレビュー</string>
+    <string name="sprite_status_tab_title">ステータス（状態セット切替）</string>
+    <string name="sprite_status_intro">ステータスを選ぶと、アニメ確認タブに反映されます。</string>
+    <string name="sprite_status_selected_label">選択中: %1$s</string>
+    <string name="sprite_status_button_use">このステータスを使う</string>
+    <string name="sprite_status_button_selected">選択中</string>
+    <string name="sprite_status_desc_idle">待機ステータスのフレームセットです。</string>
+    <string name="sprite_status_desc_talk_long">長めの発話ステータス用フレームセットです。</string>
+    <string name="sprite_status_desc_talk_calm">静かな発話・リッスン状態のステータスです。</string>
+    <string name="sprite_status_desc_thinking">思考中ステータスのフレームセットです。</string>
+    <string name="sprite_preview_status_label">選択中ステータス: %1$s</string>
+    <string name="sprite_preview_status_hint">ステータスを変更するにはステータスタブを開いてください。</string>
+    <string name="sprite_preview_status_open_tab">ステータスを変更</string>
 </resources>

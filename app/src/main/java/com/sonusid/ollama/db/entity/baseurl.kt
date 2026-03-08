@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "base_url")
 data class BaseUrl(
-    @PrimaryKey val id: Int = 1,
-    val url: String
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val url: String,
+    val isActive: Boolean = false
 )

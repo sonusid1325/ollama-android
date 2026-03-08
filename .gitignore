@@ -12,4 +12,19 @@
 /captures
 .externalNativeBuild
 .cxx
+update.sh
 local.properties
+.env
+secrets.*
+.venv
+venv
+key.properties
+*.jks
+*.keystore
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# Kotlin
+.kotlin/
