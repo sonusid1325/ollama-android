@@ -1,13 +1,13 @@
-# LAMI Mobile (Android) クライアント
+# LAMI Mobile (Android) Client
 
-ローカルで動く個人用アシスタント「LAMI（ラミィ）」の Android 向けクライアントです。**Jetpack Compose** で構築された表情付き UI を備え、ローカル LLM との接続はオプションとして選択できます。ネットワークに依存せず動作し、プライバシーを尊重したまま日常的なタスクを手元でこなせます。
+A personal assistant called LAMI, built to run entirely on-device. The Android client uses Jetpack Compose for an expressive animated UI, with an optional local LLM connection. No network dependency, no privacy tradeoffs.
 
 ## Features
 
-- **軽量・高速**: モバイル向けに最適化されたミニマルな UI。
-- **ローカル完結**: インターネット非依存で動作し、プライバシーを確保。
-- **表情豊かなインターフェース**: スプライトアニメーションによるリアクションで操作が直感的。
-- **接続先を選べる**: ローカル LLM 連携はオプション。オフラインでも基本機能は利用可能。
+- **Lightweight and fast**: Minimal UI optimized for mobile.
+- **Fully local**: Works without internet, keeps your data on-device.
+- **Expressive interface**: Sprite animations give visual feedback that makes interactions feel natural.
+- **Flexible backend**: Local LLM integration is optional — core features work offline.
 
 ## Screenshots
 
@@ -27,95 +27,95 @@
 <img src="Screenshots/10.png" width="250" />  
 <img src="Screenshots/11.png" width="250" />  
 
-## スプライトアニメーション（状態駆動）
+## Sprite Animation (State-Driven)
 
-LAMI は内部状態に応じてスプライトを切り替え、ユーザーへのフィードバックを視覚的に提示します。各状態はイベントドリブンに遷移し、UI 反応を統一的に管理します。
+LAMI switches between sprites based on internal state, giving visual feedback that matches what's actually happening. States transition on events and are managed in one place, keeping UI reactions consistent.
 
-- **Idle**: 待機中。入力がない時の基本表情。
-- **Thinking**: 入力を処理中。思案するアニメーションで進行状況を示唆。
-- **TalkShort**: 短い応答を再生中。レスポンスが軽い場合に使用。
-- **TalkLong**: 長めの応答を再生中。ストリーミング出力や説明が続くケース。
-- **TalkCalm**: 穏やかなトーンで応答。落ち着いた会話モードを示す。
-- **ErrorLight**: 軽微なエラー。リトライ可能な入力不備など。
-- **ErrorHeavy**: 致命的エラー。接続不可やモデル異常時に強調。
-- **Offline**: ネットワーク未接続またはモデル未起動を明示。
+- **Idle**: Default expression when there's no input.
+- **Thinking**: Processing input — suggests progress with a thinking animation.
+- **TalkShort**: Playing back a short response.
+- **TalkLong**: Playing back a longer response, for streaming output or detailed explanations.
+- **TalkCalm**: Calm tone — indicates a relaxed, low-key conversation mode.
+- **ErrorLight**: Minor error, like a retryable input issue.
+- **ErrorHeavy**: Fatal error — connection failure or model crash. Visually emphasized.
+- **Offline**: No network connection or model not running.
 
-状態は単一のステートマシンで管理され、UI とバックエンドのイベントを疎結合に保つことで拡張性とテスト容易性を確保しています。
+All states are managed by a single state machine. UI and backend events stay loosely coupled, which makes the system easy to extend and test.
 
-## スプライト調整の反映確認手順
+## Verifying Sprite Adjustments
 
-「画像調整」タブで矩形を動かした結果がギャラリー・アニメタブに即座に伝搬することを確認するには、次の手順を実施してください。
+To confirm that changes made in the image adjustment tab propagate correctly to the gallery and animation tabs:
 
-1. `Settings > Sprite Debug` からキャンバスに入り、「画像調整」タブでフレーム #2 など任意の枠を数ピクセル動かします。
-2. 同じ画面内の「アニメーション」タブに切り替え、該当フレームのプレビュー位置がそのまま反映されているか目視で確認します。
-3. 「ステータス」タブのギャラリーで同じ表情を選び、`LamiStatusSprite` の表示位置が一致していることを再度確認します。
-4. 必要に応じて「リセット」で元の 3x3 配置に戻し、再度 1〜3 を繰り返します。
+1. Go to `Settings > Sprite Debug`, open the canvas, and move any frame (e.g. frame #2) by a few pixels in the image adjustment tab.
+2. Switch to the Animation tab in the same screen and visually confirm the frame preview reflects the change.
+3. Open the Status tab gallery, select the same expression, and verify that `LamiStatusSprite` renders in the correct position.
+4. Use the Reset button to return to the default 3x3 layout and repeat steps 1–3 if needed.
 
 ## Installation
 
-1. **Download** the latest APK from [GitHub Releases](#)。
-2. **Install** the APK on your Android device。
-3. **Launch the application** and start interacting with the LAMI assistant。
+1. **Download** the latest APK from [GitHub Releases](#).
+2. **Install** the APK on your Android device.
+3. **Launch the application** and start using LAMI.
 
 ## Requirements
 
 - Android 13 or higher
-- Minimum 4GB RAM (Recommended: 6GB+ for better performance)
-- （オプション）ローカル LLM 環境を用意する場合は、端末上でモデルが動作する設定を済ませてください。
+- Minimum 4GB RAM (6GB+ recommended for better performance)
+- (Optional) If you want local LLM support, set up a model that can run on-device before connecting.
 
 ## Usage
 
 1. Open the application.
-2. （任意）ローカル LLM への接続を有効化し、モデルをロード。
-3. 新規チャットを開始するか、既存スレッドを再開。
-4. スプライトの表情や通知を確認しつつ、必要に応じて設定を調整。
+2. (Optional) Enable local LLM connection and load your model.
+3. Start a new chat or resume an existing thread.
+4. Watch the sprite expressions and notifications, and adjust settings as needed.
 
-## 将来拡張
+## Planned Features
 
-- **音声同期**: 音声合成のタイムスタンプと連動した口パク・まばたき表現。
-- **感情表現の強化**: センチメント解析に基づく表情・ポーズの自動変化。
-- **リッチな状態管理**: ユーザー行動や通知と連動した新規ステートの追加（例: Listening, Busy）。
-- **プラグイン連携**: ローカル API や外部サービスと安全に統合できる拡張ポイントの提供。
+- **Voice sync**: Lip sync and blinking tied to TTS timestamps.
+- **Richer emotion**: Automatic expression and pose changes driven by sentiment analysis.
+- **Expanded state machine**: New states tied to user behavior and notifications (e.g. Listening, Busy).
+- **Plugin support**: Extension points for safe integration with local APIs and external services.
 
-利用者は音声や表情を通じたリッチな対話を、開発者はステートマシンとスプライトセットを拡張することで独自の体験を構築できます。
+Users get richer interactions through voice and expressions. Developers can extend the state machine and sprite sets to build their own experiences on top.
 
 ## Contributing
 
-We welcome contributions! Feel free to **fork the repository** and submit **pull requests**.
+Contributions are welcome. Fork the repo and open a pull request.
 
-### Contribution Guidelines
+### Guidelines
 - Follow standard Android development best practices.
-- Ensure UI/UX consistency with Jetpack Compose.
-- Keep performance optimizations in mind.
+- Keep UI/UX consistent with Jetpack Compose.
+- Be mindful of performance.
 
-## 開発環境セットアップ
+## Development Setup
 
-ローカルでの確認と自動化フローに参加するための最小手順です。
+Minimum setup to run things locally and participate in the automated workflow.
 
-1. 必要ツールのインストール
-   ```bash
+1. Install required tools
+```bash
    pip install --upgrade pre-commit commitizen
    pre-commit install --hook-type pre-commit --hook-type commit-msg
-   ```
-2. Android SDK の準備（未設定の場合）
-   ```bash
+```
+2. Set up Android SDK (if not already configured)
+```bash
    sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-   ```
-3. テスト実行
-   ```bash
+```
+3. Run tests
+```bash
    ./gradlew test
-   ```
-4. 変更前の自動フォーマット
-   ```bash
+```
+4. Auto-format before committing
+```bash
    pre-commit run --all-files
-   ```
+```
 
-GitHub Actions でも `./gradlew test` を実行する CI を用意しているため、プルリクエスト作成時に自動でユニットテストが走ります。
+A CI pipeline runs `./gradlew test` automatically on every pull request via GitHub Actions.
 
 ## License
 
-This project is licensed under the **MIT License**.
+MIT License
 
 ---
 
-Developed with ❤️ using Jetpack Compose for Android.
+Developed with Jetpack Compose for Android.
